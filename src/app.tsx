@@ -7,9 +7,9 @@ import { Song } from "./types/song";
 import { GuessType } from "./types/guess";
 import { songs } from "./constants";
 
-import { todaysSolution, devConfig, getDevConfig } from "./helpers";
+import { todaysSolution } from "./helpers";
 
-import { Header, InfoPopUp, Game, Footer, DevTools } from "./components";
+import { Header, InfoPopUp, Game, DevTools } from "./components";
 
 import * as Styled from "./app.styled";
 
@@ -170,8 +170,6 @@ function App() {
     
     console.log('[DevTools] Rerolled to:', newSolution.artist, '-', newSolution.name);
   }, [initialGuess]);
-
-  const devConfig = getDevConfig();
   
   return (
     <main key={gameKey}>

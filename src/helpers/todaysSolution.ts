@@ -12,22 +12,22 @@ const msInDay = 86400000;
 const startDate = new Date('4/15/2022');
 
 export function getDevConfig(): DevConfig {
+  // Only load config in development mode
+  if (process.env.NODE_ENV !== 'development') {
+    return { devMode: false, forceDate: null, showDevTools: false };
+  }
+  
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const config = require('../dev.config.json');
     console.log('[DevConfig] Loaded:', config);
     
-    // For development, always enable if file exists
-    if (process.env.NODE_ENV === 'development') {
-      return {
-        devMode: true,
-        forceDate: config.forceDate || null,
-        showDevTools: true,
-        notes: config.notes
-      };
-    }
-    
-    return config;
+    return {
+      devMode: true,
+      forceDate: config.forceDate || null,
+      showDevTools: true,
+      notes: config.notes
+    };
   } catch (error) {
     console.log('[DevConfig] No config file found, dev mode disabled');
     return { devMode: false, forceDate: null, showDevTools: false };
