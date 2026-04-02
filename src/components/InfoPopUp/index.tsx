@@ -1,5 +1,4 @@
 import React from "react";
-import { IoMusicalNoteOutline, IoHelpCircleOutline } from "react-icons/io5";
 import { Button } from "..";
 
 import * as Styled from "./index.styled";
@@ -17,7 +16,7 @@ export function InfoPopUp({ onClose }: Props) {
         <Styled.Section>
           {/* <IoMusicalNoteOutline size={50} /> */}
           <p>
-            Listen to the intro, then find the correct Joywave song in the list.
+            Listen to the intro, then find the correct fakemink: song in the list.
           </p>
         </Styled.Section>
         <Styled.Section>

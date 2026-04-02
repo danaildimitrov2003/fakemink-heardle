@@ -5,10 +5,11 @@ import _ from "lodash";
 
 import { Song } from "./types/song";
 import { GuessType } from "./types/guess";
+import { songs } from "./constants";
 
-import { todaysSolution } from "./helpers";
+import { todaysSolution, devConfig, getDevConfig } from "./helpers";
 
-import { Header, InfoPopUp, Game, Footer } from "./components";
+import { Header, InfoPopUp, Game, Footer, DevTools } from "./components";
 
 import * as Styled from "./app.styled";
 
@@ -25,6 +26,8 @@ function App() {
   const [currentTry, setCurrentTry] = React.useState<number>(0);
   const [selectedSong, setSelectedSong] = React.useState<Song>();
   const [didGuess, setDidGuess] = React.useState<boolean>(false);
+  const [gameKey, setGameKey] = React.useState<number>(0);
+  const [currentSolution, setCurrentSolution] = React.useState<Song>(todaysSolution);
 
   const firstRun = localStorage.getItem("firstRun") === null;
   let stats = JSON.parse(localStorage.getItem("stats") || "{}");
@@ -108,7 +111,7 @@ function App() {
   }, [currentTry]);
 
   const guess = React.useCallback(() => {
-    const isCorrect = selectedSong === todaysSolution;
+    const isCorrect = selectedSong === currentSolution;
 
     if (!selectedSong) {
       alert("Choose a song");
@@ -139,23 +142,53 @@ function App() {
       label: `${selectedSong.artist} - ${selectedSong.name}`,
       value: isCorrect ? 1 : 0,
     });
-  }, [guesses, selectedSong]);
+  }, [guesses, selectedSong, currentSolution]);
 
+  const handleReroll = React.useCallback(() => {
+    // Pick a new random song
+    const randomIndex = Math.floor(Math.random() * songs.length);
+    const newSolution = songs[randomIndex];
+    
+    // Update current solution
+    setCurrentSolution(newSolution);
+    
+    // Reset game state
+    setGuesses(Array.from({ length: 5 }).fill(initialGuess) as GuessType[]);
+    setCurrentTry(0);
+    setSelectedSong(undefined);
+    setDidGuess(false);
+    setGameKey((prev) => prev + 1);
+    
+    // Clear localStorage for this session to allow replaying
+    const stats = JSON.parse(localStorage.getItem("stats") || "{}");
+    if (Array.isArray(stats) && stats.length > 0) {
+      stats[stats.length - 1].currentTry = 0;
+      stats[stats.length - 1].didGuess = 0;
+      stats[stats.length - 1].guesses = Array.from({ length: 5 }).fill(initialGuess);
+      localStorage.setItem("stats", JSON.stringify(stats));
+    }
+    
+    console.log('[DevTools] Rerolled to:', newSolution.artist, '-', newSolution.name);
+  }, [initialGuess]);
+
+  const devConfig = getDevConfig();
+  
   return (
-    <main>
+    <main key={gameKey}>
       <Header openInfoPopUp={openInfoPopUp} />
       {isInfoPopUpOpen && <InfoPopUp onClose={closeInfoPopUp} />}
       <Styled.Container>
         <Game
           guesses={guesses}
           didGuess={didGuess}
-          todaysSolution={todaysSolution}
+          todaysSolution={currentSolution}
           currentTry={currentTry}
           setSelectedSong={setSelectedSong}
           skip={skip}
           guess={guess}
         />
       </Styled.Container>
+      <DevTools onReroll={handleReroll} currentSolution={currentSolution} />
       {/* <Footer /> */}
     </main>
   );

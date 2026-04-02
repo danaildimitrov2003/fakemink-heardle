@@ -1,4 +1,5 @@
 export { Button } from "./Button";
+export { DevTools } from "./DevTools";
 export { Footer } from "./Footer";
 export { Game } from "./Game";
 export { Guess } from "./Guess";

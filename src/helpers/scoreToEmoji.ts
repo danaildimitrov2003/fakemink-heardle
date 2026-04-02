@@ -12,7 +12,7 @@ export function scoreToEmoji(guesses: GuessType[]): string {
     empty: "⬛️",
   };
   // const todaysDate = new Date();
-  const prefix = `HeardleTemplate - #${index} 🎧`;
+  const prefix = `fakemink: Heardle - #${index} 🎧`;
 
   let scoreEmoji = "";
 

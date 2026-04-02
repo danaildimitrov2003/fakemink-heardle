@@ -1,30 +1,101 @@
-# Heardle Template
+# fakemink: Heardle
 
-Forked from [Shizerq](https://github.com/Shizerq/sluchajfun) 
-Clone of famous [Heardle](https://heardle.app) - "that daily music game". <br />
-Uses through the YouTube iFrame API.
+A daily music guessing game for fakemink fans! Based on the famous [Heardle](https://heardle.app) game.
 
-4/28/22 - issues with video availability
+Listen to song intros, guess the fakemink track, and share your scores!
 
-# Building (default React stuff)
+## Features
 
-In the project directory, you can run:
+- Daily song challenges with 6 attempts
+- Progressive audio previews (more of the song revealed with each wrong guess)
+- Search through 131+ fakemink tracks
+- Share your results with emoji grid
+- Dev mode for testing (see [DEV_GUIDE.md](DEV_GUIDE.md))
 
-### `yarn`
-Installs all the required dependencies.
+## Getting Started
 
-### `yarn start`
+### Prerequisites
 
-Runs the app in the development mode.\
+- Node.js (v16 or higher)
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/fakemink-heardle.git
+cd fakemink-heardle
+
+# Install dependencies
+npm install
+# or
+yarn
+```
+
+### Development
+
+```bash
+# Start the development server
+npm start
+# or
+yarn start
+```
+
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Production Build
 
-### `yarn build`
+```bash
+npm run build
+# or
+yarn build
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Builds the app for production to the `build` folder.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## How to Play
+
+1. Listen to the song intro
+2. Search for and select the song you think it is
+3. Wrong answers reveal more of the song
+4. Try to guess in as few tries as possible!
+5. Share your score with friends
+
+## Development
+
+For development tools and testing features, see [DEV_GUIDE.md](DEV_GUIDE.md).
+
+### Dev Mode
+
+To enable dev mode:
+
+1. Create `src/dev.config.json`:
+```json
+{
+  "devMode": true,
+  "forceDate": null,
+  "showDevTools": true
+}
+```
+
+Dev mode provides:
+- Current song information
+- Reroll button to test different songs
+- YouTube preview link
+
+## Tech Stack
+
+- React 17
+- TypeScript
+- YouTube iFrame API
+- Styled Components
+- React Icons
+
+## Credits
+
+- Original template by [Shizerq](https://github.com/Shizerq/sluchajfun)
+- Inspired by [Heardle](https://heardle.app)
+
+## License
+
+MIT

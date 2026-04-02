@@ -14,51 +14,60 @@ interface Props {
 export function Search({ currentTry, setSelectedSong }: Props) {
   const [value, setValue] = React.useState<string>("");
   const [results, setResults] = React.useState<Song[]>([]);
+  const [selectedValue, setSelectedValue] = React.useState<string>("");
+  const isSelecting = React.useRef(false);
 
   React.useEffect(() => {
-    if (value) {
+    if (value && !isSelecting.current) {
       setResults(searchSong(value));
     } else if (value === "") {
       setResults([]);
     }
+    isSelecting.current = false;
   }, [value]);
 
   // clear value on selection
   React.useEffect(() => {
     setValue("");
+    setSelectedValue("");
   }, [currentTry]);
 
   return (
     <Styled.Container>
-      <Styled.ResultsContainer>
-        {results.map((song) => (
-          <Styled.Result
-            key={song.youtubeId}
-            onClick={() => {
-              setSelectedSong(song);
-              setValue(`${song.artist} - ${song.name}`);
-              setResults([]);
+      {results.length > 0 && (
+        <Styled.ResultsContainer>
+          {results.map((song) => (
+            <Styled.Result
+              key={song.youtubeId}
+              onClick={() => {
+                setSelectedSong(song);
+                const displayValue = `${song.artist} - ${song.name}`;
+                setSelectedValue(displayValue);
+                setValue(displayValue);
+                isSelecting.current = true;
+                setResults([]);
 
-              event({
-                category: "Player",
-                action: "Chose song",
-                label: `${song.artist} - ${song.name}`,
-              });
-            }}
-          >
-            <Styled.ResultText>
-              {song.artist} - {song.name}
-            </Styled.ResultText>
-          </Styled.Result>
-        ))}
-      </Styled.ResultsContainer>
+                event({
+                  category: "Player",
+                  action: "Chose song",
+                  label: `${song.artist} - ${song.name}`,
+                });
+              }}
+            >
+              <Styled.ResultText>
+                {song.artist} - {song.name}
+              </Styled.ResultText>
+            </Styled.Result>
+          ))}
+        </Styled.ResultsContainer>
+      )}
       <Styled.SearchContainer>
         <Styled.SearchPadding>
           <IoSearch size={20} />
           <Styled.Input
             onChange={(e) => setValue(e.currentTarget.value)}
             placeholder="Search"
-            value={value}
+            value={selectedValue || value}
           />
         </Styled.SearchPadding>
       </Styled.SearchContainer>
